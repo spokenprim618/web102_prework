@@ -106,10 +106,12 @@ function filterUnfundedOnly() {
     deleteChildElements(gamesContainer);
 
     // use filter() to get a list of games that have not yet met their goal
-
+    const listOfUnfunded = GAMES_JSON.filter((unfunded)=>{
+        return unfunded.pledged < unfunded.goal;
+    })
 
     // use the function we previously created to add the unfunded games to the DOM
-
+    addGamesToPage(listOfUnfunded)
 }
 
 // show only games that are fully funded
@@ -117,10 +119,12 @@ function filterFundedOnly() {
     deleteChildElements(gamesContainer);
 
     // use filter() to get a list of games that have met or exceeded their goal
-
+    const listOfFunded = GAMES_JSON.filter((funded)=>{
+        return funded.pledged > funded.goal;
+    })
 
     // use the function we previously created to add unfunded games to the DOM
-
+    addGamesToPage(listOfFunded)
 }
 
 // show all games
@@ -128,7 +132,7 @@ function showAllGames() {
     deleteChildElements(gamesContainer);
 
     // add all games from the JSON data to the DOM
-
+    addGamesToPage(GAMES_JSON)
 }
 
 // select each button in the "Our Games" section
@@ -137,6 +141,9 @@ const fundedBtn = document.getElementById("funded-btn");
 const allBtn = document.getElementById("all-btn");
 
 // add event listeners with the correct functions to each button
+unfundedBtn.addEventListener("click",filterUnfundedOnly)
+fundedBtn.addEventListener("click",filterFundedOnly)
+allBtn.addEventListener("click",showAllGames)
 
 
 /*************************************************************************************
@@ -148,13 +155,17 @@ const allBtn = document.getElementById("all-btn");
 const descriptionContainer = document.getElementById("description-container");
 
 // use filter or reduce to count the number of unfunded games
+const totalUnFunded = GAMES_JSON.reduce((acc,unfunded)=>{
 
+    return acc + (unfunded.pledged < unfunded.goal);
+},0)
 
 // create a string that explains the number of unfunded games using the ternary operator
-
-
+const explanation = `In total $${totalContributions.toLocaleString('en-US')} has been made for ${totalGames}. Currently ${totalUnFunded>0?totalUnFunded+" remains unfunded. We need your help to fund these remaining games": totalUnFunded+" remain unfunded. We appreciate your support for these amazing games."}`
 // create a new DOM element containing the template string and append it to the description container
-
+let newExplanation = document.createElement("p");
+newExplanation.innerText=`${explanation}`;
+descriptionContainer.append(newExplanation);
 /************************************************************************************
  * Challenge 7: Select & display the top 2 games
  * Skills used: spread operator, destructuring, template literals, sort 
