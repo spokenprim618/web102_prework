@@ -37,9 +37,9 @@ GIF created with ... https://www.screentogif.com/
 
 Describe any challenges encountered while building the app.
 
-I had the most challenge with the first, sixth, and seventh sections. 
+I had the most challenge with the first, sixth, and seventh sections.
 * The first git section was a challenge but I know have a deeper understanding of how stores copies of code, the staging area, how to track the timeline of changes, git branch hash values, and further git commands
-* The sixth section was a challenge but now I understand how the methods filter and reduce function. Also to note some of the examples seemed to be out dated in syntax such as destructuring. 
+* The sixth section was a challenge but now I understand how the methods filter and reduce function. Also to note some of the examples seemed to be out dated in syntax such as destructuring.
 * The seventh section was a challenge in creating the search and displaying content. Also to note the sorted method I have found that it mutated the json array and instead I used toSorted which created a new array instead.
 
 ## License
