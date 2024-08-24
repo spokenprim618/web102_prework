@@ -2,8 +2,9 @@
 
 body {
     font-family: 'Cabin';
-    background-color: #758190;
+    background-color: #eceadf;
 }
+
 
 #tentacles {
     width: 50px;
@@ -11,30 +12,31 @@ body {
 
 .header {
     display: flex;
-    background-color: lightblue;
+    background-color: #71a3b1;
     padding: 1%;
-    align-items: center;
     margin-left: -10px;
     margin-right: -10px;
-    margin-top: -10px;
+    margin-top: 1.5rem;
+   justify-content: center;
+   
 }
 
 .stats-container {
     display:flex;
     align-items: baseline;
-}
-.stats-container:hover{
-    cursor:pointer;
-    box-shadow:0 0 30px lightblue;
+    background-color: #d6d8cc;
+
 }
 
+
 .stats-card {
-    background-color: #a8b0bc;
     border-radius: 7px;
     padding: 1%;
     margin: 1%;
     width: 100%;
     text-align: center;
+    background-color: #71a3b1;
+
 }
 
 #num-contributions, #total-raised, #num-games {
@@ -45,6 +47,8 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    background-color: #d6d8cc;
+
 }
 
 .game-img {
@@ -54,12 +58,13 @@ body {
 }
 
 .game-card {
-    background-color: #FFFFFF;
+    background-color: #81b3c1;
     padding: 1%;
     margin: 1%;
     width: 300px;
     text-align: center;
     border-radius: 7px;
+    border: lightblue solid;
 }
 
 .game-card:hover {
@@ -89,4 +94,40 @@ button {
 #all-btn:hover{
     cursor: pointer;
     box-shadow: 0 0 30px lightblue;
+}
+#search-btn:hover{
+    cursor: pointer;
+    box-shadow: 0 0 30px lightblue;
+}
+h2{
+    text-align: center;
+    letter-spacing: .5px;
+    font-size: xx-large;
+}
+p{
+    font-size: 25px;
+}
+#description-container{
+    text-align: center;
+}
+.background-container{
+    margin: 1rem;
+    padding: 1rem;
+    box-shadow: 1px 1px rgba(0,0,0,.5);
+    background-color: #d6d8cc;
+
+}
+.stats-container-collected{
+    background-color: #d6d8cc;
+    margin: 1rem;
+    padding: 1rem;
+    box-shadow: 1px 1px rgba(0,0,0,.5);
+}
+
+.our-games-collected{
+    background-color: #d6d8cc;
+    margin: 1rem;
+    padding: 1rem;
+    box-shadow: 1px 1px rgba(0,0,0,.5);
+    text-align: center;
 }

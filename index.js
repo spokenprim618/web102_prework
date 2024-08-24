@@ -8,8 +8,7 @@
 import GAMES_DATA from './games.js';
 
 // create a list of objects to store the data about the games using JSON.parse
-const GAMES_JSON = JSON.parse(GAMES_DATA)
-
+let GAMES_JSON = JSON.parse(GAMES_DATA)
 // remove all child elements from a parent element in the DOM
 function deleteChildElements(parent) {
     while (parent.firstChild) {
@@ -32,13 +31,26 @@ function addGamesToPage(games) {
     for(let i=0;i<=games.length-1;i++){
        let newDiv= document.createElement("div");
         newDiv.classList.add("game-card");
-        newDiv.innerHTML=
-        `
-            <h1>${games[i].name}</h1>
-            <p>${games[i].description}</p>
-            <img src= "${games[i].img}" class="game-img">
-        `
-        gamesContainer.append(newDiv);
+        if((games[i].name&&games[i].description&&games[i].img)!=undefined){
+            newDiv.innerHTML=
+            `
+                <h1>${games[i].name}</h1>
+                <p>${games[i].description}</p>
+                <img src= "${games[i].img}" class="game-img">
+                
+            `
+            gamesContainer.append(newDiv);
+        }
+        else if(((games[i].name&&games[i].description&&games[i].img)==undefined)&&games[i].error!=undefined){
+             newDiv.innerHTML=
+            `
+            <p class = "erorr">${games[i].error}</p>
+            `
+            gamesContainer.append(newDiv);
+        }
+     
+
+       
     }
 
         // create a new div element, which will become the game card
@@ -54,9 +66,11 @@ function addGamesToPage(games) {
 
 
         // append the game to the games-container
-
+        
+        return gamesContainer
 }
-addGamesToPage(GAMES_JSON);
+addGamesToPage(GAMES_JSON)
+
 // call the function we just defined using the correct variable
 // later, we'll call this function using a different list of games
 
@@ -71,9 +85,10 @@ addGamesToPage(GAMES_JSON);
 const contributionsCard = document.getElementById("num-contributions");
 
 // use reduce() to count the number of total contributions by summing the backers
-const totalContributions = GAMES_JSON.reduce((acc, contribution)=>{
+const totalContributions = 
+GAMES_JSON.reduce((acc, contribution)=>{
     return acc + contribution.backers;
-},0)
+},0);
 
 contributionsCard.innerHTML=`<p>${totalContributions.toLocaleString('en-US')}</p>`;
 // set the inner HTML using a template literal and toLocaleString to get a number with commas
@@ -92,7 +107,7 @@ raisedCard.innerHTML=`<p>$${totalRaised.toLocaleString('en-US')}</p>`;
 // grab number of games card and set its inner HTML
 const gamesCard = document.getElementById("num-games");
 
-const totalGames = GAMES_JSON.length
+const totalGames = GAMES_JSON.length;
 
 gamesCard.innerHTML=`<p>${totalGames.toLocaleString('en-US')}</p>`;
 /*************************************************************************************
@@ -132,7 +147,7 @@ function showAllGames() {
     deleteChildElements(gamesContainer);
 
     // add all games from the JSON data to the DOM
-    addGamesToPage(GAMES_JSON)
+    addGamesToPage(GAMES_JSON);
 }
 
 // select each button in the "Our Games" section
@@ -141,9 +156,9 @@ const fundedBtn = document.getElementById("funded-btn");
 const allBtn = document.getElementById("all-btn");
 
 // add event listeners with the correct functions to each button
-unfundedBtn.addEventListener("click",filterUnfundedOnly)
-fundedBtn.addEventListener("click",filterFundedOnly)
-allBtn.addEventListener("click",showAllGames)
+unfundedBtn.addEventListener("click",filterUnfundedOnly);
+fundedBtn.addEventListener("click",filterFundedOnly);
+allBtn.addEventListener("click",showAllGames);
 
 
 /*************************************************************************************
@@ -174,12 +189,44 @@ descriptionContainer.append(newExplanation);
 const firstGameContainer = document.getElementById("first-game");
 const secondGameContainer = document.getElementById("second-game");
 
-const sortedGames =  GAMES_JSON.sort( (item1, item2) => {
-    return item2.pledged - item1.pledged;
+const sortedGames =  
+GAMES_JSON.toSorted( (item1, item2) => {
+    return item1.pledged - item2.pledged;
 });
-
+console.log(typeof sortedGames)
 // use destructuring and the spread operator to grab the first and second games
-
+let [first, second]= sortedGames;
 // create a new element to hold the name of the top pledge game, then append it to the correct element
+let topGameElement = document.createElement("p");
+topGameElement.innerText=`${first.name}`;
+firstGameContainer.append(topGameElement);
 
 // do the same for the runner up item
+let runnerUpGameElement = document.createElement("p");
+runnerUpGameElement.innerText=`${second.name}`;
+secondGameContainer.append(runnerUpGameElement);
+
+/************************************************************************************/
+
+
+let searchBarBtn = document.getElementById("search-btn");
+
+
+function searchFilter(){
+    deleteChildElements(gamesContainer);
+    let searchBarValue= document.getElementById("search").value;
+    let results = []
+    for(let i = 0;i<=GAMES_JSON.length-1;i++){
+        if (GAMES_JSON[i].name.toLowerCase().includes(searchBarValue.toLowerCase())){
+            results.push(GAMES_JSON[i])
+        }else if(i==GAMES_JSON.length-1&&results.length==0){
+            results.push({error:"We are sorry but this game doesn't exist. Try again."})
+
+        }
+    }
+    console.log(searchBarValue)
+    addGamesToPage(results)
+    console.log("clicked")
+    console.log(results)
+}
+searchBarBtn.addEventListener("click",searchFilter)
