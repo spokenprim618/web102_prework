@@ -7,6 +7,9 @@
 // import the JSON data about the crowd funded games from the games.js file
 import GAMES_DATA from './games.js';
 
+let isUnFunded = false;
+let isFunded = false;
+let isAll = false;
 // create a list of objects to store the data about the games using JSON.parse
 let GAMES_JSON = JSON.parse(GAMES_DATA)
 // remove all child elements from a parent element in the DOM
@@ -126,7 +129,11 @@ function filterUnfundedOnly() {
     })
 
     // use the function we previously created to add the unfunded games to the DOM
+    isUnFunded = true;
+    isAll = false;
+    isFunded = false;
     addGamesToPage(listOfUnfunded)
+    return listOfUnfunded
 }
 
 // show only games that are fully funded
@@ -139,7 +146,11 @@ function filterFundedOnly() {
     })
 
     // use the function we previously created to add unfunded games to the DOM
+    isUnFunded = false;
+    isAll = false;
+    isFunded = true;
     addGamesToPage(listOfFunded)
+    return listOfFunded
 }
 
 // show all games
@@ -147,7 +158,11 @@ function showAllGames() {
     deleteChildElements(gamesContainer);
 
     // add all games from the JSON data to the DOM
+    isUnFunded = false;
+    isAll = true;
+    isFunded = false;
     addGamesToPage(GAMES_JSON);
+    return GAMES_JSON
 }
 
 // select each button in the "Our Games" section
@@ -212,21 +227,38 @@ secondGameContainer.append(runnerUpGameElement);
 let searchBarBtn = document.getElementById("search-btn");
 
 
-function searchFilter(){
+function searchFilter(array){
     deleteChildElements(gamesContainer);
     let searchBarValue= document.getElementById("search").value;
     let results = []
-    for(let i = 0;i<=GAMES_JSON.length-1;i++){
-        if (GAMES_JSON[i].name.toLowerCase().includes(searchBarValue.toLowerCase())){
-            results.push(GAMES_JSON[i])
-        }else if(i==GAMES_JSON.length-1&&results.length==0){
+    for(let i = 0;i<=array.length-1;i++){
+        if (array[i].name.toLowerCase().includes(searchBarValue.toLowerCase())){
+            results.push(array[i])
+        }else if(i==array.length-1&&results.length==0){
             results.push({error:"We are sorry but this game doesn't exist. Try again."})
 
         }
     }
-    console.log(searchBarValue)
+   
     addGamesToPage(results)
-    console.log("clicked")
-    console.log(results)
+    
 }
-searchBarBtn.addEventListener("click",searchFilter)
+function centralSearchFunction(){
+ 
+
+
+    if(isFunded == true){
+        searchFilter(filterFundedOnly())
+    }
+    if(isUnFunded == true){
+        searchFilter(filterUnfundedOnly())
+    }
+    if(isAll == true){
+        searchFilter(showAllGames())
+    }
+    else{
+        searchFilter(GAMES_JSON)
+    }
+}
+
+searchBarBtn.addEventListener("click",centralSearchFunction)
